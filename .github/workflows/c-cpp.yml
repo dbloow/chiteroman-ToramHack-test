@@ -1,0 +1,27 @@
+# .github/workflows/build-magisk.yml
+name: Build Magisk Module
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up zip
+        run: sudo apt-get install -y zip
+
+      - name: Build Magisk Module
+        run: |
+          zip -r magisk-module.zip * -x ".git/*" ".github/*"
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: magisk-module
+          path: magisk-module.zip
